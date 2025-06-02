@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --card-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --header-gradient: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            --success-gradient: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            --danger-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            --dark-blue: #0f172a;
+            --light-blue: #e0f2fe;
+            --text-dark: #1e293b;
+            --text-light: #f8fafc;
+            --border-radius: 16px;
+            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e8ecef;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .section-title i {
+            background: var(--card-gradient);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #f8f9fa;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .radio-option:hover {
+            border-color: #4facfe;
+            background: #e3f2fd;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            accent-color: #4facfe;
+        }
+
+        .radio-option label {
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .data-entry-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .data-entry-table th {
+            background: var(--card-gradient);
+            color: white;
+            padding: 18px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .data-entry-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .data-entry-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .data-entry-table input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 16px;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .data-entry-table input[type="number"]:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--header-gradient);
+            color: white;
+            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.4);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 176, 155, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 176, 155, 0.4);
+        }
+
+        .btn-danger {
+            background: var(--danger-gradient);
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 65, 108, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.4);
+        }
+
+        .computed-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            font-size: 0.95rem;
+        }
+
+        .computed-table th {
+            background: var(--card-gradient);
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .computed-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .computed-table tfoot td {
+            background: #f8f9fa;
+            font-weight: 700;
+            border-top: 2px solid #4facfe;
+            font-size: 1.1rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #4facfe;
+            transition: var(--transition);
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-label {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .equation-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            border-left: 5px solid #4facfe;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .equation-box strong {
+            color: #1d4ed8;
+        }
+
+        .footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .developer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .developer-info h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .developer-details {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--header-gradient);
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .disclaimer {
+            font-size: 1rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 20px auto 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            .radio-option {
+                min-width: 100%;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .result-value {
+                font-size: 1.5rem;
+            }
+
+            .developer-info h3 {
+                font-size: 1.2rem;
+            }
+
+            .developer-details {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .result-value {
+                font-size: 1.4rem;
+            }
+
+            .equation-box {
+                padding: 20px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-calculator"></i> Error Calculator</h1>
+                <p>Calculate linear regression parameters with detailed error analysis and uncertainty propagation</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="card">
+                <h2 class="section-title">
+                    <i class="fas fa-project-diagram"></i>
+                    Select Linear Model
+                </h2>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" name="model" value="two-param" id="two-param" checked>
+                        <label for="two-param">y = mx + c (Two-parameter)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="model" value="one-param" id="one-param">
+                        <label for="one-param">y = mx (One-parameter)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    Data Entry
+                </h2>
+                <div class="table-container">
+                    <table class="data-entry-table" id="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>x</th>
+                                <th>y</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-tbody">
+                            <tr>
+                                <td>1</td>
+                                <td><input type="number" step="any" class="x-input" placeholder="Enter x"></td>
+                                <td><input type="number" step="any" class="y-input" placeholder="Enter y"></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><input type="number" step="any" class="x-input" placeholder="Enter x"></td>
+                                <td><input type="number" step="any" class="y-input" placeholder="Enter y"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-success" id="add-row">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Row
+                    </button>
+                    <button class="btn btn-danger" id="remove-row">
+                        <i class="fas fa-minus-circle"></i>
+                        Remove Row
+                    </button>
+                    <button class="btn btn-primary" id="compute-btn">
+                        <i class="fas fa-cogs"></i>
+                        Compute Fit & Errors
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-section hidden" id="results-section">
+                <div class="card">
+                    <h2 class="section-title">
+                        <i class="fas fa-calculator"></i>
+                        Detailed Calculations
+                    </h2>
+                    <div class="table-container">
+                        <table class="computed-table" id="computed-table">
+                            <thead>
+                                <tr>
+                                    <th>i</th>
+                                    <th>x<sub>i</sub></th>
+                                    <th>y<sub>i</sub></th>
+                                    <th>x<sub>i</sub>²</th>
+                                    <th>y<sub>i</sub>²</th>
+                                    <th>x<sub>i</sub>y<sub>i</sub></th>
+                                    <th id="residual-header">d<sub>i</sub> = y<sub>i</sub> - (mx<sub>i</sub> + c)</th>
+                                    <th>d<sub>i</sub>²</th>
+                                </tr>
+                            </thead>
+                            <tbody id="computed-tbody">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Σ</td>
+                                    <td id="sum-x">0</td>
+                                    <td id="sum-y">0</td>
+                                    <td id="sum-xx">0</td>
+                                    <td id="sum-yy">0</td>
+                                    <td id="sum-xy">0</td>
+                                    <td>-</td>
+                                    <td id="sum-dd">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Fit Results
+                    </h2>
+                    
+                    <div class="equations-section" id="equations-section">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-square-root-alt"></i> Equations Used
+                        </h3>
+                        <div class="equation-box">
+                            <div id="fit-equations" style="font-family: 'Courier New', monospace; line-height: 1.8;">
+                                <!-- Equations will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-label"><i class="fas fa-sliders-h"></i> Slope (m)</div>
+                            <div class="result-value" id="fit-m">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label"><i class="fas fa-ruler"></i> Slope Uncertainty (σ<sub>m</sub>)</div>
+                            <div class="result-value" id="err-m">-</div>
+                        </div>
+                        <div class="result-card" id="intercept-card">
+                            <div class="result-label"><i class="fas fa-arrows-alt-v"></i> Intercept (c)</div>
+                            <div class="result-value" id="fit-c">-</div>
+                        </div>
+                        <div class="result-card" id="intercept-err-card">
+                            <div class="result-label"><i class="fas fa-ruler-vertical"></i> Intercept Uncertainty (σ<sub>c</sub>)</div>
+                            <div class="result-value" id="err-c">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label"><i class="fas fa-chart-area"></i> Residual Std Dev (σ<sub>y</sub>)</div>
+                            <div class="result-value" id="sigma-y">-</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label"><i class="fas fa-percentage"></i> R-squared (R²)</div>
+                            <div class="result-value" id="r-squared">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="developer-info">
+                <h3><i class="fas fa-user-graduate"></i> Developer Information</h3>
+                <div class="developer-details">
+                    Abishek R (BSc-Undergraduate) at Faculty of Natural Sciences, The Open University of Sri Lanka
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="www.linkedin.com/in/abishek-rathnakumar-lk/" class="social-link" target="_blank" title="LinkedIn Profile">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+            
+            <div class="disclaimer">
+                <i class="fas fa-exclamation-circle"></i> This tool is for educational purposes only. While it can verify answers, 
+                users are strongly encouraged to understand the underlying mathematics of least-squares regression and error propagation.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const dataTable = document.getElementById('data-table');
+            const dataTbody = document.getElementById('data-tbody');
+            const addRowBtn = document.getElementById('add-row');
+            const removeRowBtn = document.getElementById('remove-row');
+            const computeBtn = document.getElementById('compute-btn');
+            const resultsSection = document.getElementById('results-section');
+            const computedTbody = document.getElementById('computed-tbody');
+            const modelRadios = document.querySelectorAll('input[name="model"]');
+            const interceptCard = document.getElementById('intercept-card');
+            const interceptErrCard = document.getElementById('intercept-err-card');
+
+            let rowCount = 2;
+
+            // Add row functionality
+            addRowBtn.addEventListener('click', function() {
+                rowCount++;
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${rowCount}</td>
+                    <td><input type="number" step="any" class="x-input" placeholder="Enter x"></td>
+                    <td><input type="number" step="any" class="y-input" placeholder="Enter y"></td>
+                `;
+                dataTbody.appendChild(newRow);
+            });
+
+            // Remove row functionality
+            removeRowBtn.addEventListener('click', function() {
+                if (rowCount > 2) {
+                    dataTbody.removeChild(dataTbody.lastElementChild);
+                    rowCount--;
+                } else {
+                    alert("You need at least two data points for regression analysis.");
+                }
+            });
+
+            // Model selection handler
+            modelRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'one-param') {
+                        interceptCard.style.display = 'none';
+                        interceptErrCard.style.display = 'none';
+                        document.getElementById('residual-header').innerHTML = 'd<sub>i</sub> = y<sub>i</sub> - mx<sub>i</sub>';
+                    } else {
+                        interceptCard.style.display = 'block';
+                        interceptErrCard.style.display = 'block';
+                        document.getElementById('residual-header').innerHTML = 'd<sub>i</sub> = y<sub>i</sub> - (mx<sub>i</sub> + c)';
+                    }
+                });
+            });
+
+            // Compute button functionality
+            computeBtn.addEventListener('click', function() {
+                const originalText = computeBtn.innerHTML;
+                computeBtn.innerHTML = '<span class="loading"></span> Computing...';
+                computeBtn.disabled = true;
+
+                setTimeout(() => {
+                    try {
+                        computeLeastSquares();
+                    } catch (error) {
+                        alert('Error in computation: ' + error.message);
+                    } finally {
+                        computeBtn.innerHTML = originalText;
+                        computeBtn.disabled = false;
+                    }
+                }, 100);
+            });
+
+            function computeLeastSquares() {
+                // Collect data points
+                const xInputs = document.querySelectorAll('.x-input');
+                const yInputs = document.querySelectorAll('.y-input');
+                const dataPoints = [];
+
+                for (let i = 0; i < xInputs.length; i++) {
+                    const x = parseFloat(xInputs[i].value);
+                    const y = parseFloat(yInputs[i].value);
+                    if (!isNaN(x) && !isNaN(y)) {
+                        dataPoints.push({x, y});
+                    }
+                }
+
+                if (dataPoints.length < 2) {
+                    alert('Please enter at least two valid (x, y) points.');
+                    return;
+                }
+
+                const n = dataPoints.length;
+                const selectedModel = document.querySelector('input[name="model"]:checked').value;
+
+                // Calculate sums
+                let Sx = 0, Sy = 0, Sxx = 0, Syy = 0, Sxy = 0;
+                
+                for (const point of dataPoints) {
+                    Sx += point.x;
+                    Sy += point.y;
+                    Sxx += point.x * point.x;
+                    Syy += point.y * point.y;
+                    Sxy += point.x * point.y;
+                }
+
+                let m, c, sigma_m, sigma_c, sigma_y, R2;
+                let equationText = '';
+
+                if (selectedModel === 'two-param') {
+                    // Two parameter fit: y = mx + c
+                    const denominator = n * Sxx - Sx * Sx;
+                    m = (n * Sxy - Sx * Sy) / denominator;
+                    c = (Sy * Sxx - Sx * Sxy) / denominator;
+
+                    // Show equations used
+                    equationText = `
+                        <strong>Two-Parameter Fit: y = mx + c</strong><br><br>
+                        <strong>Slope (m):</strong><br>
+                        m = (n·Σxᵢyᵢ - Σxᵢ·Σyᵢ) / (n·Σxᵢ² - (Σxᵢ)²)<br>
+                        m = (${n}×${Sxy.toFixed(4)} - ${Sx.toFixed(4)}×${Sy.toFixed(4)}) / (${n}×${Sxx.toFixed(4)} - ${Sx.toFixed(4)}²)<br>
+                        m = ${((n * Sxy - Sx * Sy)).toFixed(4)} / ${denominator.toFixed(4)} = <strong>${m.toFixed(5)}</strong><br><br>
+                        
+                        <strong>Intercept (c):</strong><br>
+                        c = (Σyᵢ·Σxᵢ² - Σxᵢ·Σxᵢyᵢ) / (n·Σxᵢ² - (Σxᵢ)²)<br>
+                        c = (${Sy.toFixed(4)}×${Sxx.toFixed(4)} - ${Sx.toFixed(4)}×${Sxy.toFixed(4)}) / ${denominator.toFixed(4)}<br>
+                        c = ${(Sy * Sxx - Sx * Sxy).toFixed(4)} / ${denominator.toFixed(4)} = <strong>${c.toFixed(5)}</strong>
+                    `;
+
+                    // Calculate residuals and sigma_y
+                    let sumResidualsSq = 0;
+                    for (const point of dataPoints) {
+                        const residual = point.y - (m * point.x + c);
+                        sumResidualsSq += residual * residual;
+                    }
+
+                    const sigma_y_sq = sumResidualsSq / (n - 2);
+                    sigma_y = Math.sqrt(sigma_y_sq);
+
+                    // Uncertainty propagation
+                    sigma_m = sigma_y * Math.sqrt(n / denominator);
+                    sigma_c = sigma_y * Math.sqrt(Sxx / (n * denominator));
+
+                } else {
+                    // One parameter fit: y = mx
+                    c = 0;
+                    m = Sxy / Sxx;
+
+                    // Show equations used
+                    equationText = `
+                        <strong>One-Parameter Fit: y = mx</strong><br><br>
+                        <strong>Slope (m):</strong><br>
+                        m = Σxᵢyᵢ / Σxᵢ²<br>
+                        m = ${Sxy.toFixed(4)} / ${Sxx.toFixed(4)} = <strong>${m.toFixed(5)}</strong><br><br>
+                        <strong>Intercept (c):</strong><br>
+                        c = 0 (fixed)
+                    `;
+
+                    // Calculate residuals and sigma_y
+                    let sumResidualsSq = 0;
+                    for (const point of dataPoints) {
+                        const residual = point.y - m * point.x;
+                        sumResidualsSq += residual * residual;
+                    }
+
+                    const sigma_y_sq = sumResidualsSq / (n - 1);
+                    sigma_y = Math.sqrt(sigma_y_sq);
+
+                    // Uncertainty propagation
+                    sigma_m = sigma_y / Math.sqrt(Sxx);
+                    sigma_c = 0;
+                }
+
+                // Display the equations
+                document.getElementById('fit-equations').innerHTML = equationText;
+
+                // Calculate R-squared
+                const yMean = Sy / n;
+                let SST = 0;
+                let SSR = 0;
+
+                for (const point of dataPoints) {
+                    SST += (point.y - yMean) * (point.y - yMean);
+                    const fitted = selectedModel === 'two-param' ? m * point.x + c : m * point.x;
+                    const residual = point.y - fitted;
+                    SSR += residual * residual;
+                }
+
+                R2 = 1 - (SSR / SST);
+
+                // Display results in detailed table
+                computedTbody.innerHTML = '';
+                let sumDD = 0;
+
+                for (let i = 0; i < dataPoints.length; i++) {
+                    const point = dataPoints[i];
+                    const xi2 = point.x * point.x;
+                    const yi2 = point.y * point.y;
+                    const xiyi = point.x * point.y;
+                    const fitted = selectedModel === 'two-param' ? m * point.x + c : m * point.x;
+                    const di = point.y - fitted;
+                    const di2 = di * di;
+                    sumDD += di2;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${i + 1}</td>
+                        <td>${point.x.toFixed(4)}</td>
+                        <td>${point.y.toFixed(4)}</td>
+                        <td>${xi2.toFixed(4)}</td>
+                        <td>${yi2.toFixed(4)}</td>
+                        <td>${xiyi.toFixed(4)}</td>
+                        <td>${di.toFixed(4)}</td>
+                        <td>${di2.toFixed(4)}</td>
+                    `;
+                    computedTbody.appendChild(row);
+                }
+
+                // Update sum row
+                document.getElementById('sum-x').textContent = Sx.toFixed(4);
+                document.getElementById('sum-y').textContent = Sy.toFixed(4);
+                document.getElementById('sum-xx').textContent = Sxx.toFixed(4);
+                document.getElementById('sum-yy').textContent = Syy.toFixed(4);
+                document.getElementById('sum-xy').textContent = Sxy.toFixed(4);
+                document.getElementById('sum-dd').textContent = sumDD.toFixed(4);
+
+                // Update fit results
+                document.getElementById('fit-m').textContent = m.toFixed(5);
+                document.getElementById('err-m').textContent = sigma_m.toExponential(2);
+                document.getElementById('fit-c').textContent = c.toFixed(5);
+                document.getElementById('err-c').textContent = sigma_c.toExponential(2);
+                document.getElementById('sigma-y').textContent = sigma_y.toFixed(5);
+                document.getElementById('r-squared').textContent = R2.toFixed(4);
+
+                // Show/hide intercept cards based on model
+                if (selectedModel === 'one-param') {
+                    interceptCard.style.display = 'none';
+                    interceptErrCard.style.display = 'none';
+                } else {
+                    interceptCard.style.display = 'block';
+                    interceptErrCard.style.display = 'block';
+                }
+
+                // Show results section
+                resultsSection.classList.remove('hidden');
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
