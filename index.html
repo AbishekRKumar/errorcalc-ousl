@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title> Error Calc | High-Precision Error Calculator</title>
+    <title>ABIfit | High-Precision Error Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,17 +11,70 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Light / Dark Variables */
+        :root {
+            --bg-gradient-start: #0A0F1A;
+            --bg-gradient-end: #03060C;
+            --card-bg: rgba(18, 25, 45, 0.85);
+            --card-border: rgba(72, 187, 255, 0.12);
+            --hero-bg: linear-gradient(135deg, #0B1120 0%, #0F1A2F 100%);
+            --text-primary: #EFF3F8;
+            --text-secondary: #A0B3D9;
+            --input-bg: #0C1326;
+            --input-border: #2F4162;
+            --table-header-bg: #0F172A;
+            --table-border: #1E2A3F;
+            --badge-bg: #32281C;
+            --badge-text: #FFC857;
+            --accent: #2DD4BF;
+            --accent-glow: rgba(45, 212, 191, 0.2);
+            --btn-primary-bg: linear-gradient(105deg, #1E2A5E, #2B3B73);
+            --btn-primary-border: #4F7DF3;
+            --stat-card-bg: rgba(12, 20, 35, 0.7);
+            --stat-card-border: rgba(45, 212, 191, 0.2);
+            --eq-bg: #070C1A;
+            --footer-bg: #030712;
+            --toast-bg: #1F2937;
+            --shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        body.light {
+            --bg-gradient-start: #f0f4fa;
+            --bg-gradient-end: #d9e2ef;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-border: rgba(0, 100, 120, 0.15);
+            --hero-bg: linear-gradient(135deg, #e9f0ff 0%, #d4e2fc 100%);
+            --text-primary: #0F172A;
+            --text-secondary: #2c3e66;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --table-header-bg: #eef2ff;
+            --table-border: #e2e8f0;
+            --badge-bg: #fef3c7;
+            --badge-text: #b45309;
+            --accent: #0F766E;
+            --accent-glow: rgba(15, 118, 110, 0.15);
+            --btn-primary-bg: linear-gradient(105deg, #1e4a76, #0f5b7a);
+            --btn-primary-border: #2c7da0;
+            --stat-card-bg: rgba(248, 250, 252, 0.9);
+            --stat-card-border: rgba(15, 118, 110, 0.25);
+            --eq-bg: #f1f5f9;
+            --footer-bg: #eef2ff;
+            --toast-bg: #1e293b;
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background: radial-gradient(circle at 10% 20%, #0A0F1A, #03060C);
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start), var(--bg-gradient-end));
             font-family: 'Inter', 'Segoe UI', sans-serif;
             padding: 2rem 1.5rem;
             min-height: 100vh;
-            color: #EFF3F8;
+            color: var(--text-primary);
         }
 
-        /* custom scroll */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -29,6 +82,9 @@
         ::-webkit-scrollbar-track {
             background: #1E293B;
             border-radius: 10px;
+        }
+        body.light ::-webkit-scrollbar-track {
+            background: #cbd5e1;
         }
         ::-webkit-scrollbar-thumb {
             background: #5B6E8C;
@@ -40,45 +96,30 @@
             margin: 0 auto;
         }
 
-        /* modern glass card style */
         .modern-card {
-            background: rgba(18, 25, 45, 0.85);
+            background: var(--card-bg);
             backdrop-filter: blur(2px);
-            border: 1px solid rgba(72, 187, 255, 0.12);
+            border: 1px solid var(--card-border);
             border-radius: 2rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.02);
+            box-shadow: var(--shadow);
             transition: all 0.25s ease;
             overflow: hidden;
         }
 
-        .modern-card:hover {
-            border-color: rgba(0, 212, 255, 0.25);
-            box-shadow: 0 30px 50px -20px rgba(0, 180, 255, 0.2);
-        }
-
-        /* header gradient */
         .hero-section {
-            background: linear-gradient(135deg, #0B1120 0%, #0F1A2F 100%);
+            background: var(--hero-bg);
             padding: 2rem 2rem;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            border-bottom: 1px solid var(--accent-glow);
             position: relative;
-            overflow: hidden;
-        }
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, rgba(0,212,255,0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
         .hero-title {
             font-size: 2.4rem;
             font-weight: 800;
-            background: linear-gradient(120deg, #FFFFFF, #94A3F8, #38BDF8);
+            background: linear-gradient(120deg, var(--text-primary), var(--accent), #94A3F8);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
@@ -88,16 +129,27 @@
             gap: 0.75rem;
         }
         .hero-sub {
-            color: #A0B3D9;
+            color: var(--text-secondary);
             font-weight: 400;
             margin-top: 0.5rem;
         }
-
-        /* sections */
+        .theme-toggle {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--card-border);
+            border-radius: 3rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        body.light .theme-toggle {
+            background: rgba(0,0,0,0.05);
+        }
         .content-padding {
             padding: 2rem;
         }
-
         .section-badge {
             font-weight: 600;
             letter-spacing: -0.2px;
@@ -106,15 +158,9 @@
             align-items: center;
             gap: 0.6rem;
             font-size: 1.3rem;
-            border-left: 4px solid #2DD4BF;
+            border-left: 4px solid var(--accent);
             padding-left: 1rem;
         }
-        .section-badge i {
-            color: #2DD4BF;
-            font-size: 1.3rem;
-        }
-
-        /* settings row */
         .settings-flex {
             display: flex;
             flex-wrap: wrap;
@@ -125,10 +171,13 @@
         .radio-group-modern {
             display: flex;
             gap: 1rem;
-            background: #0F1629;
+            background: rgba(0,0,0,0.2);
             padding: 0.5rem;
             border-radius: 2rem;
-            border: 1px solid #263449;
+            border: 1px solid var(--input-border);
+        }
+        body.light .radio-group-modern {
+            background: #eef2ff;
         }
         .radio-option-modern {
             display: flex;
@@ -142,39 +191,33 @@
             font-weight: 500;
         }
         .radio-option-modern input {
-            accent-color: #2DD4BF;
-            width: 18px;
-            height: 18px;
-            margin: 0;
+            accent-color: var(--accent);
         }
         .radio-option-modern:has(input:checked) {
-            background: #1E2A47;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            background: var(--accent-glow);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .precision-select {
-            background: #0F1629;
-            border: 1px solid #2A3A55;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 1.5rem;
             padding: 0.6rem 1.2rem;
-            color: white;
+            color: var(--text-primary);
             font-weight: 500;
             outline: none;
             cursor: pointer;
-            transition: 0.2s;
         }
         .precision-select:focus {
-            border-color: #2DD4BF;
+            border-color: var(--accent);
         }
-
-        /* toggle switch */
         .auto-toggle {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: #0F1629;
+            background: var(--input-bg);
             padding: 0.3rem 1rem;
             border-radius: 40px;
-            border: 1px solid #2A3A55;
+            border: 1px solid var(--input-border);
         }
         .switch {
             position: relative;
@@ -210,19 +253,17 @@
             border-radius: 50%;
         }
         input:checked + .slider {
-            background: linear-gradient(95deg, #2DD4BF, #3B82F6);
+            background: linear-gradient(95deg, var(--accent), #3B82F6);
         }
         input:checked + .slider:before {
             transform: translateX(26px);
         }
-
-        /* table styles */
         .data-table-wrapper {
             overflow-x: auto;
             border-radius: 1.2rem;
             margin: 1.2rem 0;
-            background: #0B1020;
-            border: 1px solid #253245;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
         }
         table {
             width: 100%;
@@ -230,34 +271,33 @@
             font-size: 0.9rem;
         }
         th {
-            background: #0F172A;
+            background: var(--table-header-bg);
             padding: 1rem 0.8rem;
             font-weight: 600;
-            color: #B9D0F0;
-            border-bottom: 1px solid #2A3A55;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--table-border);
         }
         td {
             padding: 0.8rem;
-            border-bottom: 1px solid #1E2A3F;
+            border-bottom: 1px solid var(--table-border);
             text-align: center;
         }
         input.table-input {
-            background: #0C1326;
-            border: 1px solid #2F4162;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 12px;
             padding: 10px 12px;
             width: 100%;
             min-width: 100px;
-            color: #F1F5F9;
+            color: var(--text-primary);
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-            transition: 0.2s;
             text-align: center;
         }
         input.table-input:focus {
             outline: none;
-            border-color: #2DD4BF;
-            box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.3);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
         }
         .btn-group {
             display: flex;
@@ -278,16 +318,16 @@
             font-size: 0.9rem;
         }
         .btn-primary {
-            background: linear-gradient(105deg, #1E2A5E, #2B3B73);
-            border: 1px solid #4F7DF3;
+            background: var(--btn-primary-bg);
+            border: 1px solid var(--btn-primary-border);
             color: white;
         }
-        .btn-primary:hover { transform: translateY(-2px); background: #2C3E7A; box-shadow: 0 6px 14px rgba(0,160,255,0.2);}
-        .btn-success { background: linear-gradient(110deg, #0F5E53, #139C89); color: white;}
-        .btn-danger { background: linear-gradient(110deg, #9B2C3E, #C4455A); color: white;}
-        .btn-warning { background: #C27A2E; color: #0A0F1A;}
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn-success { background: linear-gradient(110deg, #0F5E53, #139C89); color: white; }
+        .btn-danger { background: linear-gradient(110deg, #9B2C3E, #C4455A); color: white; }
+        .btn-warning { background: #C27A2E; color: #0A0F1A; }
+        body.light .btn-warning { background: #e9a23b; color: #1e293b; }
 
-        /* result cards grid */
         .results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -295,29 +335,24 @@
             margin: 1.5rem 0;
         }
         .stat-card {
-            background: rgba(12, 20, 35, 0.7);
+            background: var(--stat-card-bg);
             backdrop-filter: blur(4px);
             border-radius: 1.5rem;
             padding: 1.2rem 1rem;
-            border: 1px solid rgba(45, 212, 191, 0.2);
-            transition: 0.2s;
-        }
-        .stat-card:hover {
-            border-color: #2DD4BF;
-            background: #0E172E;
+            border: 1px solid var(--stat-card-border);
         }
         .stat-label {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #8DAAE0;
+            color: var(--text-secondary);
         }
         .stat-value {
             font-size: 1.7rem;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
             word-break: break-word;
-            color: #F0F6FF;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -326,77 +361,81 @@
             font-size: 1rem;
             opacity: 0.5;
             cursor: pointer;
-            transition: 0.2s;
         }
         .copy-icon:hover {
             opacity: 1;
-            color: #2DD4BF;
+            color: var(--accent);
         }
         .equation-box-modern {
-            background: #070C1A;
+            background: var(--eq-bg);
             border-radius: 1.2rem;
             padding: 1.3rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
-            border-left: 4px solid #2DD4BF;
+            border-left: 4px solid var(--accent);
             margin-bottom: 1.5rem;
         }
         .toast-msg {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #1F2937;
+            background: var(--toast-bg);
             backdrop-filter: blur(12px);
             color: #D1F7F2;
             padding: 10px 20px;
             border-radius: 40px;
             font-size: 0.85rem;
             z-index: 1000;
-            transition: 0.2s;
-            border-left: 3px solid #2DD4BF;
+            border-left: 3px solid var(--accent);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             pointer-events: none;
         }
+        body.light .toast-msg { color: #0F172A; background: #eef2ff; }
         .outdated-badge {
-            background: #32281C;
+            background: var(--badge-bg);
             border-radius: 30px;
             padding: 0.3rem 1rem;
             font-size: 0.8rem;
-            color: #FFC857;
+            color: var(--badge-text);
+            text-align: center;
+            display: inline-block;
         }
         footer {
-            background: #030712;
-            border-top: 1px solid #1E2A3F;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--table-border);
             padding: 1.8rem;
             text-align: center;
         }
         @media (max-width: 700px) {
             body { padding: 1rem; }
             .hero-title { font-size: 1.7rem; }
-            .btn-group { flex-direction: column; }
+            .hero-section { flex-direction: column; align-items: start; gap: 1rem; }
         }
     </style>
 </head>
 <body>
 <div class="glass-container">
-    <!-- header modern -->
     <div class="modern-card">
         <div class="hero-section">
-            <div class="hero-title">
-                <i class="fas fa-chart-scatter"></i> Error Calc · Error Analytics
+            <div>
+                <div class="hero-title">
+                    <i class="fas fa-chart-line"></i> ABIfit
+                </div>
+                <div class="hero-sub">High-Precision Error Calculator · Advanced Linear Regression & Uncertainty</div>
             </div>
-            <div class="hero-sub">High-precision linear regression · full uncertainty propagation</div>
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fas fa-sun"></i> <span id="themeText">Light</span> / <i class="fas fa-moon"></i>
+            </div>
         </div>
         
         <div class="content-padding">
-            <!-- configuration row -->
             <div class="settings-flex">
                 <div class="radio-group-modern">
                     <label class="radio-option-modern">
                         <input type="radio" name="model" value="two-param" checked> <span>📈 y = m·x + c</span>
                     </label>
                     <label class="radio-option-modern">
-                        <input type="radio" name="model" value="one-param"> <span>📉 y = m·x (through origin)</span>
+                        <input type="radio" name="model" value="one-param"> <span>📉 y = m·x (origin)</span>
                     </label>
                 </div>
                 <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
@@ -420,11 +459,11 @@
         <!-- DATA ENTRY CARD -->
         <div class="content-padding" style="padding-top: 0;">
             <div class="section-badge"><i class="fas fa-database"></i> Data matrix</div>
-            <div class="bulk-paste-container" style="background: #0C1222; border-radius: 1rem; padding: 0.8rem 1rem; margin-bottom: 1rem;">
+            <div class="bulk-paste-container" style="background: var(--input-bg); border-radius: 1rem; padding: 0.8rem 1rem; margin-bottom: 1rem; border:1px solid var(--input-border);">
                 <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                    <i class="fas fa-paste" style="color:#2DD4BF"></i>
+                    <i class="fas fa-paste" style="color:var(--accent)"></i>
                     <span style="font-weight: 500;">Smart paste (Excel / TSV) :</span>
-                    <textarea id="bulk-paste" rows="1" placeholder="Paste columns X and Y → 1.2  4.5&#10;2.3  5.6" style="background:#050A16; border:1px solid #2A3A55; border-radius: 24px; padding: 8px 16px; color:white; flex:1; font-family: monospace;"></textarea>
+                    <textarea id="bulk-paste" rows="1" placeholder="Paste columns X and Y → 1.2  4.5&#10;2.3  5.6" style="background:var(--input-bg); border:1px solid var(--input-border); border-radius: 24px; padding: 8px 16px; color:var(--text-primary); flex:1; font-family: monospace;"></textarea>
                 </div>
             </div>
 
@@ -469,11 +508,11 @@
                 </div>
             </div>
         </div>
-        <div id="outdated-message" style="display: none; text-align: center; padding: 1rem 2rem 2rem;" class="outdated-badge"><i class="fas fa-info-circle"></i> Data changed · Auto‑compute is OFF · Press [Compute now]</div>
+        <div id="outdated-message" style="display: none; text-align: center; padding: 1rem 2rem 2rem;"><span class="outdated-badge"><i class="fas fa-info-circle"></i> Data changed · Auto‑compute is OFF · Press [Compute now]</span></div>
 
         <footer>
             <div><i class="fas fa-brain"></i> Developed by Abishek R | BSc (OUSL) — Faculty of Natural Sciences</div>
-            <div style="margin-top: 8px;"><a href="https://www.linkedin.com/in/abishek-rathnakumar-lk/" target="_blank" style="color:#38BDF8; text-decoration: none;"><i class="fab fa-linkedin"></i> LinkedIn</a></div>
+            <div style="margin-top: 8px;"><a href="https://www.linkedin.com/in/abishek-rathnakumar-lk/" target="_blank" style="color:var(--accent); text-decoration: none;"><i class="fab fa-linkedin"></i> LinkedIn</a></div>
             <div style="font-size: 0.7rem; margin-top: 12px;">IEEE754 double precision · Exact error propagation</div>
         </footer>
     </div>
@@ -481,7 +520,28 @@
 
 <script>
     (function() {
-        // DOM elements
+        // THEME TOGGLE
+        const themeToggle = document.getElementById('themeToggle');
+        const themeTextSpan = document.getElementById('themeText');
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light');
+                themeTextSpan.innerText = 'Dark';
+            } else {
+                document.body.classList.remove('light');
+                themeTextSpan.innerText = 'Light';
+            }
+            localStorage.setItem('abifit-theme', theme);
+        }
+        const savedTheme = localStorage.getItem('abifit-theme');
+        if (savedTheme === 'light') setTheme('light');
+        else setTheme('dark');
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.classList.contains('light');
+            setTheme(isLight ? 'dark' : 'light');
+        });
+
+        // DOM references
         const dataTbody = document.getElementById('data-tbody');
         const addRowBtn = document.getElementById('add-row');
         const removeRowBtn = document.getElementById('remove-row');
@@ -497,7 +557,6 @@
         let autoComputeEnabled = true;
         autoToggle.addEventListener('change', (e) => { autoComputeEnabled = e.target.checked; if(autoComputeEnabled) { outdatedMsg.style.display = 'none'; computeLeastSquares(); } else if(resultsDiv.style.display !== 'none') { outdatedMsg.style.display = 'block'; } });
 
-        // Helper format
         function formatNum(num) {
             if (num === undefined || num === null || isNaN(num)) return '—';
             const opt = precisionSelect.value;
@@ -515,7 +574,6 @@
             setTimeout(() => toast.remove(), 1800);
         }
 
-        // Copy handlers
         document.addEventListener('click', (e) => {
             if(e.target.classList.contains('copy-icon')) {
                 let parentStat = e.target.closest('.stat-card');
@@ -557,7 +615,6 @@
             }
         }
 
-        // Bulk paste logic
         bulkTextarea.addEventListener('input', function(e) {
             let text = e.target.value.trim();
             if(!text) return;
@@ -585,7 +642,6 @@
             }
         });
 
-        // core regression
         function computeLeastSquares() {
             const xInputs = document.querySelectorAll('.x-input');
             const yInputs = document.querySelectorAll('.y-input');
@@ -604,21 +660,18 @@
             let Sx=0,Sy=0,Sxx=0,Syy=0,Sxy=0;
             points.forEach(p => { Sx+=p.x; Sy+=p.y; Sxx+=p.x*p.x; Syy+=p.y*p.y; Sxy+=p.x*p.y; });
             
-            let m, c, sigma_m, sigma_c, sigma_y, R2, sumDD=0;
-            let computedRowsHtml = '';
+            let m, c, sigma_m, sigma_c, sigma_y, R2, totalDD=0;
             if(model === 'two-param') {
                 const denom = n*Sxx - Sx*Sx;
-                if(denom===0) { showToast('x values are identical, singular'); return; }
+                if(denom===0) { showToast('x values are identical'); return; }
                 m = (n*Sxy - Sx*Sy)/denom;
                 c = (Sy*Sxx - Sx*Sxy)/denom;
                 let residualSum=0;
                 points.forEach(p => { let resid = p.y - (m*p.x + c); residualSum += resid*resid; });
-                sumDD = residualSum;
+                totalDD = residualSum;
                 sigma_y = Math.sqrt(residualSum / (n-2));
                 sigma_m = sigma_y * Math.sqrt(n/denom);
                 sigma_c = sigma_y * Math.sqrt(Sxx/(n*denom));
-                
-                // build equation text
                 let eq = `<strong>📐 Two-parameter fit (y = mx + c)</strong><br>m = (n·Σxy - ΣxΣy) / (n·Σx² - (Σx)²)<br>m = (${n}·${formatNum(Sxy)} - ${formatNum(Sx)}·${formatNum(Sy)}) / denom = <strong>${formatNum(m)}</strong><br>c = (Σy·Σx² - Σx·Σxy)/denom = ${formatNum(c)}<br>σᵧ = √(Σdᵢ²/(n-2)) = ${formatNum(sigma_y)}<br>σₘ = ${formatNum(sigma_m)} &nbsp;&nbsp; σ꜀ = ${formatNum(sigma_c)}`;
                 document.getElementById('fit-equations').innerHTML = eq;
             } else {
@@ -627,14 +680,13 @@
                 c = 0;
                 let residualSum=0;
                 points.forEach(p => { let resid = p.y - m*p.x; residualSum += resid*resid; });
-                sumDD = residualSum;
+                totalDD = residualSum;
                 sigma_y = Math.sqrt(residualSum / (n-1));
                 sigma_m = sigma_y / Math.sqrt(Sxx);
                 sigma_c = 0;
                 document.getElementById('fit-equations').innerHTML = `<strong>📐 One-parameter (y = mx)</strong><br>m = Σxy/Σx² = ${formatNum(Sxy)} / ${formatNum(Sxx)} = <strong>${formatNum(m)}</strong><br>σᵧ = √(Σdᵢ²/(n-1)) = ${formatNum(sigma_y)}<br>σₘ = σᵧ/√Σx² = ${formatNum(sigma_m)}`;
             }
 
-            // R² calculation
             const yMean = Sy/n;
             let SST=0, SSR=0;
             points.forEach(p => {
@@ -644,15 +696,12 @@
             });
             R2 = (SST!==0) ? 1 - SSR/SST : 1;
             
-            // Build detailed table
             const tbody = document.getElementById('computed-tbody');
             tbody.innerHTML = '';
-            let totalDD=0;
             points.forEach((p, idx) => {
                 const fitted = (model==='two-param') ? (m*p.x + c) : (m*p.x);
                 const residual = p.y - fitted;
                 const residSq = residual*residual;
-                totalDD += residSq;
                 const row = `<tr><td>${idx+1}</td><td>${formatNum(p.x)}</td><td>${formatNum(p.y)}</td><td>${formatNum(p.x*p.x)}</td><td>${formatNum(p.y*p.y)}</td><td>${formatNum(p.x*p.y)}</td><td>${formatNum(residual)}</td><td>${formatNum(residSq)}</td></tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
             });
@@ -663,7 +712,6 @@
             document.getElementById('sum-xy').innerText = formatNum(Sxy);
             document.getElementById('sum-dd').innerText = formatNum(totalDD);
             
-            // update display results
             document.getElementById('fit-m').innerText = formatNum(m);
             document.getElementById('err-m').innerText = formatNum(sigma_m);
             document.getElementById('fit-c').innerText = formatNum(c);
@@ -681,18 +729,14 @@
             resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         
-        // event wiring
         addRowBtn.addEventListener('click', addRow);
         removeRowBtn.addEventListener('click', removeRow);
         clearBtn.addEventListener('click', clearAll);
         computeBtn.addEventListener('click', () => { computeLeastSquares(); if(!autoComputeEnabled) outdatedMsg.style.display = 'none'; });
         modelRadios.forEach(r => r.addEventListener('change', () => triggerDataChange()));
         precisionSelect.addEventListener('change', () => { if(resultsDiv.style.display !== 'none') computeLeastSquares(); else if(autoComputeEnabled) computeLeastSquares(); });
-        
-        // listen to all input changes
         document.addEventListener('input', (e) => { if(e.target.classList && (e.target.classList.contains('x-input') || e.target.classList.contains('y-input'))) triggerDataChange(); });
         
-        // initial auto compute on load if data present
         setTimeout(() => { if(autoComputeEnabled) computeLeastSquares(); }, 100);
     })();
 </script>
